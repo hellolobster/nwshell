@@ -1,7 +1,11 @@
 window.ShellBrowserConfig = window.ShellBrowserConfig || {
-    title: 'Node Webkit Shell',
+    title: 'web pushas llc',
     debug: true,
     hideTools: false,
+    jailTools: false,
+    hideAppRefresh: false,
     shrinkBar: true,
-    homepage: 'http://www.google.com/'
+    /* http://vlsglobalcargo.com/?cargoappv=1.0 */
+    homepage: 'http://google.com/',
+    injectWpm: true
 };

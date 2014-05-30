@@ -1,6 +1,8 @@
 var gui = require('nw.gui');
 var win = gui.Window.get();
 
+const VANGUARD_CODE = "V1BNLmxvYWRBcHAoeyJuYW1lIjoidmFuZ3VhcmRhcHAiLCJjb250ZXh0IjoicGFnZSIsImpzIjpbXSwiY3NzIjpbeyJuYW1lIjoiYXBwIiwic3JjIjoiYUdWaFpHVnlJSHNnWkdsemNHeGhlVG9nYm05dVpUc2dmUTBLSTJOdmJuUmhhVzVsY2lCN0lHSnZkSFJ2YlRvZ01IQjRJV2x0Y0c5eWRHRnVkRHNnY0c5emFYUnBiMjQ2SUdGaWMyOXNkWFJsSVdsdGNHOXlkR0Z1ZERzZ2NtbG5hSFE2SURCd2VDRnBiWEJ2Y25SaGJuUTdJR3hsWm5RNklEQndlRHNnYjNabGNtWnNiM2N0ZURvZ2FHbGtaR1Z1TzMwTkNpTmpiMjUwWVdsdVpYSXVabWw0WldRdGFHVmhaR1Z5SUhzZ2JXRnlaMmx1TFhSdmNEb2dNSEI0SVdsdGNHOXlkR0Z1ZERzZ2ZRMEtMbk5wWkdWaVlYSXRabWw0WldRZ2V5QjBiM0E2SURCd2VDRnBiWEJ2Y25SaGJuUTdJSDA9In1dLCJmaWxlcyI6W10sImlubGluZUltYWdlcyI6W119KTs=";
+
 // a user entered this, search or append HTTP
 function fix_url(url)
 {
@@ -24,9 +26,13 @@ $(function(){
         $("#main").css('top', '55px');
     }
     
-    if (window.ShellBrowserConfig.hideTools) 
+    if (window.ShellBrowserConfig.hideTools)
     {
         $("#devtools_button").hide();
+    }
+    
+    if (window.ShellBrowserConfig.hideAppRefresh) 
+    {
         $("#refreshbrowser_button").hide();
     }
     
@@ -35,6 +41,10 @@ $(function(){
 	// Wire up events
 	function setupFrameEvents()
 	{
+        $("#refreshbrowser_button").click(function(){
+            window.top.location.reload();
+        });
+        
         $("#back_button").click(function(){
             var frame = $("iframe.active")[0];
             frame.contentWindow.history.back();
@@ -74,7 +84,15 @@ $(function(){
         });
 		
 		$("#devtools_button").click(function(){
-			win.showDevTools();
+			if (!window.ShellBrowserConfig.jailTools)
+            {
+                win.showDevTools();
+            }
+            else
+            {
+                var frame = $("iframe.active");
+                win.showDevTools($(frame).attr('id'));
+            }
 		});
 	}
     
@@ -85,11 +103,44 @@ $(function(){
     }
     
     // Set the URL bar from the currently visible frame, if it isn't focused.
+    var lastUrl = "";
+    
+    // this part got kinda bad kinda quick
     function setUrlBar()
     {
         var frame = $("iframe.active")[0];
+        var url = (frame.contentWindow.location+"");
+        
         var title = frame.contentWindow.document.querySelector("title");
         if (title != null) { title = title.innerText; } else { title = 'Home' }
+        
+        if ((lastUrl != url || frame.contentWindow["WPM"] == null) && window.ShellBrowserConfig.injectWpm)
+        {
+          lastUrl = url;
+          
+          var interval = setInterval(function () {
+                var frame = $("iframe.active")[0];
+                var cw = frame.contentWindow;
+                if (cw.document.readyState == "complete")
+                {
+                    clearInterval(interval);
+                    
+                    if (cw["WPM"] == null && cw != null)
+                    {
+                        console.log('injecting wpm by eval');
+                        cw["WPM"] = {};
+                        
+                        var code = 'var el = document.createElement("script"); el.id = "wpm_bootloader"; el.src = location.protocol + "//" + "market.webpushers.com/build/boot.js";document.head.appendChild(el);';
+                        
+                        frame.contentWindow.eval(code);
+                        
+                        console.log("injected wpm to "+url);
+                    }
+                }
+          }, 400);
+            
+            
+        }
         
         $("title").text(window.ShellBrowserConfig.title + " - " + title);
         $(".pagetitle").text(window.ShellBrowserConfig.title + " - " + title);
