@@ -1,8 +1,13 @@
 /* @theme-color: rgb(178, 46, 46); */
-@theme-color: #071636;
+/* colors ive used: rgb(178, 46, 46);, #071636, #3f7e11 */
+
+@theme-color: #3f7e11;
 @empty-bg: #e8e8e8;
 
+/*
+ vls brand color */
 @theme-color: rgb(178, 46, 46);
+ 
 
 tabs
 {
@@ -16,6 +21,7 @@ tabs
     right: 0px;
     width: 78px;
     height: 24px;
+    z-index: 6000;
     
     background-color: fadeout(darken(@theme-color, 10%), 50%);
     
@@ -48,19 +54,19 @@ tabs
 
 .fauxheader
 {
-    z-index: 1;
+    z-index: 150;
     position: fixed;
     top: 0px;
     left: 0px;
     right: 80px;
     
     cursor: move;
+    text-align: center;
     
     height: 24px;
     
     background-color: @theme-color;
     -webkit-app-region: drag;
-    border-radius: 5px;
 }
 
 .fauxheader.lower
@@ -80,6 +86,32 @@ tabs
     -webkit-app-region: drag;
 }
 
+.titlebar
+{
+    z-index: 555;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    
+    cursor: move;
+    text-align: center;
+    
+    height: 24px;
+    
+    margin-left: 5%;
+    
+    background-color: @theme-color;
+}
+
+.pagetitle
+{
+    color: #fff;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 11px;
+}
+
 header
 {
     z-index: 40;
@@ -89,9 +121,9 @@ header
     right: 0px;
     
     background-color: @theme-color;
-    border-bottom: 1px solid darken(@theme-color, 50%);
+    border-bottom: 1px solid darken(@theme-color, 10%);
     
-    height: 72px;
+    height: 73px;
     width: 100%;
     
     -webkit-user-select: none;
@@ -142,12 +174,14 @@ header
     position: relative;
     top: 2px;
     width: 60%;
-    border: 1px solid lighten(@theme-color, 50%);
+    height: 28px;
+    border: 0px solid darken(@theme-color, 10%);
+    /* border: 1px solid lighten(@theme-color, 50%); */
 }
 
 #urlbar
 {
-    border: 1px solid darken(@theme-color, 10%);
+    border: 2px solid darken(@theme-color, 10%);
     width: 100%;
     outline: none;
     height: 26px;

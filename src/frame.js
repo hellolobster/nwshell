@@ -15,13 +15,26 @@ function fix_url(url)
 }
 
 $(function(){
+    $("iframe.active")[0].src = window.ShellBrowserConfig.homepage;
+    
+    if (window.ShellBrowserConfig.shrinkBar)
+    {
+        $(".fauxheader.lower").remove();
+        $("header").css('height', '55px');
+        $("#main").css('top', '55px');
+    }
+    
+    if (window.ShellBrowserConfig.hideTools) 
+    {
+        $("#devtools_button").hide();
+        $("#refreshbrowser_button").hide();
+    }
+    
+    $("title").text(window.ShellBrowserConfig.title);
 	
 	// Wire up events
 	function setupFrameEvents()
 	{
-		// temp reload frame
-		$("#refresh_button").click(function() { window.top.location.reload(); });
-        
         $("#back_button").click(function(){
             var frame = $("iframe.active")[0];
             frame.contentWindow.history.back();
@@ -74,10 +87,16 @@ $(function(){
     // Set the URL bar from the currently visible frame, if it isn't focused.
     function setUrlBar()
     {
+        var frame = $("iframe.active")[0];
+        var title = frame.contentWindow.document.querySelector("title");
+        if (title != null) { title = title.innerText; } else { title = 'Home' }
+        
+        $("title").text(window.ShellBrowserConfig.title + " - " + title);
+        $(".pagetitle").text(window.ShellBrowserConfig.title + " - " + title);
+        
         if ($("#urlbar").is(":focus"))
             return;
         
-        var frame = $("iframe.active")[0];
         $("#urlbar").val((frame.contentWindow.location+""));
     }
     
