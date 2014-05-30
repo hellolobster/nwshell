@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+	<head>
+		<title>BrowserFrame</title>
+        
+        <!-- Reset + CSS -->
+		<link rel="stylesheet" type="text/css" href="assets/reset.css" />
+        <link rel="stylesheet" type="text/css" href="assets/icomoon/style.css" />
+        <link rel="stylesheet/less" type="text/css" href="assets/frame.less" />
+        
+        <style type="text/css">
+            html, body { overflow: hidden; }
+            #potential_sidebar { display: none; }
+        </style>
+        
+        <!-- LESS has to come after all styles -->
+        <script>
+          less = {
+            env: "development",
+            async: false,
+            fileAsync: false,
+            poll: 1000,
+            functions: {},
+            dumpLineNumbers: "comments",
+            relativeUrls: false,
+            rootpath: ":/a.com/",
+            logLevel: 0
+          };
+        </script>
+        
+        <!-- Libraries -->
+        <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="js/less-1.7.0.js"></script>
+        <script>less.watch();</script>
+        
+        <!-- Source Code -->
+        <script type="text/javascript" src="../src/frame.js"></script>
+	</head>
+    <body>
+        <div id="wrapper">
+            <div class="fauxheader"></div><div class="fauxheader lower"></div><div class="fauxheader-rest"></div>
+            <header>
+                <!-- Close / Minimize / Maximize -->
+                <div class="window-buttons">
+                    <button id="window_close"><i class="icon-close"></i></button>
+                    <button id="window_maximize"><i class="icon-maximize"></i></button>
+                    <button id="window_minimize"><i class="icon-minus"></i></button>
+                </div>
+                
+                <!-- Back Forward URL/Search -->
+                <nav>
+                    
+                    <button id="back_button" alt="Back"><i class="icon-arrow-left6"></i></button>
+                    <button id="forward_button" alt="Forward"><i class="icon-arrow-right6"></i></button>
+                    
+                    <div id="urlbar_container">
+                        <input id="urlbar" type="text" />
+                    </div>
+                    
+                    <button id="refresh_button" alt="Refresh"><i class="icon-loop2 smaller"></i></button>
+                    
+                    <button id="refresh_button" alt="Refresh" onclick="javascript:window.top.location.reload();"><i class="icon-loop smaller"></i></button>
+                    
+                    <button id="devtools_button" alt="Show Developer Tools"><i class="icon-tools"></i></button>
+                    <button id="fakes_button" disabled></button>
+                </nav>
+                
+                <!-- Nav Tabs -->
+                <tabs></tabs>
+            </header>
+            <div id="main">
+                <aside id="potential_sidebar"></aside>
+                <div id="tabcontainer">
+                    <article id="page" id="tab_1">
+                        <iframe id="tab_1_frame" class="active" nwdisable="nwdisable" nwfaketop="nwfaketop" nwuseragent="Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36" src="http://www.google.com/" />
+                    </article>
+                </div>
+            </div>
+            <footer>
+            </footer>
+        </div>
+    </body>
+</html>

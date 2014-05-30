@@ -1,0 +1,25 @@
+{
+  "name": "nwshell",
+  "version": "0.0.0",
+  "description": "webbrowser esque shell application, for further customization",
+  "main": "app://nwshell/content/frame.html",
+  "author": {
+    "name": "graham grizxle",
+    "email": "gray@webpushers.com"
+  },
+  "webkit":  {
+      "plugin": true
+  },
+  "chromium-args": "--ignore-certificate-errors",
+  "window": {
+    "toolbar": false,
+    "frame": false,
+    "width": 1000,
+    "height": 800,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 500,
+    "max_width": 30000,
+    "max_height": 30000
+  }
+}
